@@ -157,6 +157,9 @@ def langHandler(data):
       if part not in PARTS:
         langRoom.sendMessage(":" + str(data["e"][0]["message_id"]) + " Invalid part of speech!")
         return
+      if word[-1] == "i":
+        langRoom.sendMessage(":" + str(data["e"][0]["message_id"]) + " Word ends in -i!")
+        return
       id_ = langRoom.sendMessage(":" + str(data["e"][0]["message_id"]) + " Word " + word + " added to queue.")
       wordCache.append((word, part, definition, data["e"]["user_name"], id_))
   elif data["e"][0]["event_type"] == 18:
