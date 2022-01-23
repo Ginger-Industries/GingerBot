@@ -147,6 +147,15 @@ def langHandler(data):
       langRoom.sendMessage("Halting")
       bot.leaveAllRooms()
       sys.exit()
+    if msg == "@LIST":
+      queue = ""
+      for word, part, defi, user_id, _ in wordCache:
+        queue += "\n"
+        if user_id == data["e"][0]["user_id"]:
+          queue += "* "
+        queue += f"{word} ({part}): {defi}"
+      langRoom.sendMessage(f":{data["e"][0]["message_id"]} {queue}")
+      return
     if msg.startswith("<b>WR: "):
       processed_msg = re.sub("<\/?code>", "", re.sub("</?b>", "", msg))
       word, part, definition = re.fullmatch("^WR: ([\w ]+) \(([\w.]+)\): (.*)$", processed_msg).groups()
@@ -163,12 +172,12 @@ def langHandler(data):
         langRoom.sendMessage(f":{data["e"][0]["message_id"]} Word ends in -i!")
         return
       id_ = langRoom.sendMessage(":" + str(data["e"][0]["message_id"]) + " Word " + word + " added to queue.")
-      wordCache.append((word, part, definition, data["e"]["user_name"], id_))
+      wordCache.append((word, part, definition, data["e"]["user_id"], id_))
   elif data["e"][0]["event_type"] == 18:
     e = data["e"]
     for word in wordCache:
       if word[4] == e["parent_id"]:
-        if word[3] == e["user_name"] or e["user_name"] in ADMINS:
+        if word[3] == e["user_id"] or e["user_id"] in ADMINS:
           pass
 
 
