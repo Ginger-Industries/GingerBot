@@ -151,14 +151,15 @@ def langHandler(data):
       word, part, definition = re.fullmatch("^WR: ([\w ]+) \(([\w.]+)\): (.*)$", re.sub("<\/?code>", "", re.sub("</?b>", "", msg))).groups()
       if part.endswith("."):
         part = part[:-1]
-      if any([i in "cejqxw" for i in word]):
-        langRoom.sendMessage(":" + str(data["e"][0]["message_id"]) + " Word contains illegal letters!")
+      invalid_letters = [letter for letter in "cejqwx" if letter in word]
+      if invalid_letters:
+        langRoom.sendMessage(f":{data["e"][0]["message_id"]} Word contains illegal letters: {invalid_letters}!")
         return
       if part not in PARTS:
-        langRoom.sendMessage(":" + str(data["e"][0]["message_id"]) + " Invalid part of speech!")
+        langRoom.sendMessage(f":{data["e"][0]["message_id"]} Invalid part of speech!")
         return
       if word[-1] == "i":
-        langRoom.sendMessage(":" + str(data["e"][0]["message_id"]) + " Word ends in -i!")
+        langRoom.sendMessage(f":{data["e"][0]["message_id"]} Word ends in -i!")
         return
       id_ = langRoom.sendMessage(":" + str(data["e"][0]["message_id"]) + " Word " + word + " added to queue.")
       wordCache.append((word, part, definition, data["e"]["user_name"], id_))
