@@ -147,6 +147,10 @@ def langHandler(data):
       langRoom.sendMessage("Halting")
       bot.leaveAllRooms()
       sys.exit()
+    if msg == "@LIST":
+      queue = "\n".join(f"{word} ({part}): {defi}" for word, part, defi, _, _ in wordCache)
+      langRoom.sendMessage(f":{data["e"][0]["message_id"]} {queue}")
+      return
     if msg.startswith("<b>WR: "):
       processed_msg = re.sub("<\/?code>", "", re.sub("</?b>", "", msg))
       word, part, definition = re.fullmatch("^WR: ([\w ]+) \(([\w.]+)\): (.*)$", processed_msg).groups()
