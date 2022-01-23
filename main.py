@@ -148,7 +148,12 @@ def langHandler(data):
       bot.leaveAllRooms()
       sys.exit()
     if msg == "@LIST":
-      queue = "\n".join(f"{word} ({part}): {defi}" for word, part, defi, _, _ in wordCache)
+      queue = ""
+      for word, part, defi, username, _ in wordCache:
+        queue += "\n"
+        if username == data["e"][0]["user_name"]:
+          queue += "* "
+        queue += f"{word} ({part}): {defi}"
       langRoom.sendMessage(f":{data["e"][0]["message_id"]} {queue}")
       return
     if msg.startswith("<b>WR: "):
