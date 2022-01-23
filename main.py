@@ -156,15 +156,6 @@ def langHandler(data):
         queue += f"{word} ({part}): {defi}"
       langRoom.sendMessage(f":{data["e"][0]["message_id"]} {queue}")
       return
-    if msg.startswith("@REMOVE"):
-      processed_msg = msg[8:]
-      if processed_msg.endwith("."):
-        processed_msg = processed_msg[:-1]
-      for ind, (word, _, _, user_name, _) in wordCache.copy():
-         if processed_msg == word and (user_name==data["e"]["user_name"] or user_name in ADMINS):
-           wordCache.pop(ind)
-      
-      langRoom.sendMessage(":" + str(data["e"][0]["message_id"]) + " Removed word " + processed_msg + " from queue.")
     if msg.startswith("<b>WR: "):
       processed_msg = re.sub("<\/?code>", "", re.sub("</?b>", "", msg))
       word, part, definition = re.fullmatch("^WR: ([\w ]+) \(([\w.]+)\): (.*)$", processed_msg).groups()
