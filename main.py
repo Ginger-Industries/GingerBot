@@ -158,7 +158,7 @@ def langHandler(data):
       return
     if msg.startswith("@REMOVE"):
       processed_msg = msg[8:]
-      if processed_msg.endwith("."):
+      if processed_msg.endswith("."):
         processed_msg = processed_msg[:-1]
       for ind, (word, _, _, user_name, _) in wordCache.copy():
          if processed_msg == word and (user_name==data["e"]["user_name"] or user_name in ADMINS):
